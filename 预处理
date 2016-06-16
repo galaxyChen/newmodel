@@ -1,6 +1,6 @@
 1.构造一个带有？的sql语句（检查构成部分）
 2.使用prepare方法生成一个stmt对象
-3.使用stmt的bind_param方法来绑定变量
+3.使用stmt的bind_param方法来绑定变量(使用call_user_func_array函数来确定不同数量的变量)
 4.使用stmt对象的excute方法来执行语句
 5.使用stmt对象的bind_result方法来绑定结果
 6.使用get_result来提取数据
