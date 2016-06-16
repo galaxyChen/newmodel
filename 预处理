@@ -1,0 +1,8 @@
+1.构造一个带有？的sql语句（检查构成部分）
+2.使用prepare方法生成一个stmt对象
+3.使用stmt的bind_param方法来绑定变量
+4.使用stmt对象的excute方法来执行语句
+5.使用stmt对象的bind_result方法来绑定结果
+6.使用get_result来提取数据
+7.从结果对象取得每一行组织成数组返回
+7.关闭stmt对象

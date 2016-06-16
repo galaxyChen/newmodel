@@ -1,5 +1,11 @@
 <?php
 include 'link.php';
-print_r($mysqli);
+$mysqli->set_charset('UTF8');
+
+function mysql_select($sql)
+{
+	
+}
+
 
 ?>
