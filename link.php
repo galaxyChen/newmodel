@@ -1,5 +1,6 @@
 <?php
-$mysqli=new mysqli('localhost','root','root','test');
-
-
+function link_db($mysqli)
+{
+	$mysqli->connect('localhost','root','root','test');
+}
 ?>
