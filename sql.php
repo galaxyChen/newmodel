@@ -5,7 +5,7 @@ function real_value($a)
 	$result='';
 	if (is_numeric($a))
 		$result.=$a;
-	else $result.='\''.$a.'\'';
+	else $result.=$a.'123';
 	return $result;
 }
 
