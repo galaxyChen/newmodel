@@ -23,55 +23,55 @@ class SQL
 
 	public function add($a,$b)//a is case,b is value
 	{
-		$case[$query_num]=$a;
-		$value[$query_num]=$b;
-		$query_num++;
-		return $query_num;
+		$case[$this->query_num]=$a;
+		$value[$this->query_num]=$b;
+		$this->query_num++;
+		return $this->query_num;
 	}
 
 	//public function pop($num);//num is pop subscript
 
 	public function add_col($a)
 	{
-		$col[$col_num]=$a;
-		$col_num++;
-		return $col_num;
+		$col[$this->col_num]=$a;
+		$this->col_num++;
+		return $this->col_num;
 	}
 
 	public function get_case()
 	{
-		return $case;
+		return $this->case;
 	}
 
 	public function get_values()
 	{
-		return $values;
+		return $this->values;
 	}
 
 	public function get_num()
 	{
-		return $query_num;
+		return $this->query_num;
 	}
 
 	public function get_flag()
 	{
-		return $flag;
+		return $this->flag;
 	}
 
 	public function generate()
 	{
-		if ($col_num==0)//origin query head
+		if ($this->col_num==0)//origin query head
 		{
-			$flag['all']=true;
-			if ($type=='s')
+			$this->flag['all']=true;
+			if ($this->type=='s')
 				$sql='SELECT * FROM '.$table;
 		}
 		//select where logic
-		if ($query_num==0) return $sql;
+		if ($this->query_num==0) return $sql;
 		$sql.=' WHERE ';
-		for ($i=0;$i<$query_num-1;$i++)
-			$sql.=$case[$i].'='.real_values($values[$i]).' AND ';
-		$sql.=$case[$query_num-1].'='.real_values($values[$query_num-1]).';';
+		for ($i=0;$i<$this->query_num-1;$i++)
+			$sql.=$this->case[$i].'='.real_values($this->values[$i]).' AND ';
+		$sql.=$this->case[$this->query_num-1].'='.real_values($this->values[$this->query_num-1]).';';
 		return $sql;
 	}
 }
