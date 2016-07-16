@@ -23,8 +23,8 @@ class SQL
 
 	public function add($a,$b)//a is case,b is value
 	{
-		$case[$this->query_num]=$a;
-		$value[$this->query_num]=$b;
+		$case[]=$a;
+		$value[]=$b;
 		$this->query_num++;
 		return $this->query_num;
 	}
