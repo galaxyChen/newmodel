@@ -12,7 +12,7 @@ function mysql_select($sql)//where multuple where limit order
 	$mysqli=new mysqli();
 	link_db($mysqli);//link data base and set utf-8
 	$prepare=$sql->generate();
-	if ($sql['all'])//execute query directly
+	if (isset($sql['all']) && $sql['all'])//execute query directly
 	{
 		$mysqli_result=$mysqli->query($prepare);
 		if ($mysqli_result && $mysqli_result->num_rows>0)

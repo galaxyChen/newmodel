@@ -1,2 +1,8 @@
 some note:
 error 1:direct query failed
+
+
+class sql
+type:
+s:select
+i:insert
