@@ -1,6 +1,5 @@
 <?php
 include 'link.php';
-<<<<<<< HEAD
 
 
 /*
@@ -38,20 +37,6 @@ function mysql_select($sql)//where multuple where limit order
 	}
 	$mysqli->close();
 }
-=======
-
-
-function mysql_select($sql)//where multuple where limit order
-{
-	$mysqli=new mysqli();
-	link_db($mysqli);
-	$mysqli->set_charset('UTF8');
-	
-}
-
-
->>>>>>> a00b2d064af2618b76c7d2c619319b1eb7fa6ebb
-
 
 
 ?>
