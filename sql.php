@@ -25,7 +25,7 @@ class SQL
 	{
 		$this->case[$this->query_num]=$a;
 		if (is_numeric($b))
-			echo "number";
+			echo "is number";
 		$this->values[$this->query_num]=$b;
 		$this->query_num++;
 		return $this->query_num;
