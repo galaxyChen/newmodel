@@ -3,9 +3,9 @@
 function real_value($a)
 {
 	$result='';
-	if (is_numeric($a))
-		$result.=$a.'456';
-	else $result.=$a.'123';
+	if (is_int($a))
+		$result.=$a;
+	else $result.='\''.$a.'\'';
 	return $result;
 }
 
@@ -23,6 +23,8 @@ class SQL
 
 	public function add($a,$b)//a is case,b is value
 	{
+		echo gettype($a);
+		echo gettype($b);
 		$this->case[$this->query_num]=$a;
 		$this->values[$this->query_num]=$b;
 		$this->query_num++;
