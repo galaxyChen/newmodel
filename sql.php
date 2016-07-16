@@ -71,6 +71,8 @@ class SQL
 		$sql.=' WHERE ';
 		for ($i=0;$i<$this->query_num-1;$i++)
 			$sql.=$this->case[$i].'='.real_value($this->values[$i]).' AND ';
+		echo $this->case[$this->query_num-1];
+		echo $this->values[$this->query_num-1];
 		$sql.=$this->case[$this->query_num-1].'='.real_value($this->values[$this->query_num-1]).';';
 		return $sql;
 	}
