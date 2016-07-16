@@ -12,14 +12,14 @@ function real_value($a)
 
 class SQL
 {
-	private $case=array();
-	private $values=array();
-	private $col=array();
-	private $query_num=0;
-	private $col_num=0;
-	private $flag=array();
-	public $table='';
-	public $type='';
+	private var $case=array();
+	private var $values=array();
+	private var $col=array();
+	private var $query_num=0;
+	private var $col_num=0;
+	private var $flag=array();
+	public var $table='';
+	public var $type='';
 
 	public function add($a,$b)//a is case,b is value
 	{
