@@ -6,7 +6,7 @@ $sql->table='test';
 $sql->type='s';
 $sql->add('col_1','1');
 echo $sql->generate();
-print_r($sq;->get_values());
+print_r($sql->get_values());
 
 
 ?>
