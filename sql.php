@@ -4,7 +4,7 @@ function real_value($a)
 {
 	$result='';
 	if (is_numeric($a))
-		$result.=$a;
+		$result.=$a.'456';
 	else $result.=$a.'123';
 	return $result;
 }
