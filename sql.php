@@ -64,7 +64,7 @@ class SQL
 		{
 			$this->flag['all']=true;
 			if ($this->type=='s')
-				$sql='SELECT * FROM '.$table;
+				$sql='SELECT * FROM '.$this->table;
 		}
 		//select where logic
 		if ($this->query_num==0) return $sql;
