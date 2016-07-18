@@ -20,7 +20,7 @@ function mysqli_select($sql)//where multuple where limit order
 		$mysqli_result=$mysqli->query($prepare);
 		if ($mysqli_result && $mysqli_result->num_rows>0)
 		{
-			$result=$mysqli_result->fetch_all();
+			$result=$mysqli_result->fetch_array();
 			return $result;
 		}
 		else return 1;
@@ -32,7 +32,7 @@ function mysqli_select($sql)//where multuple where limit order
 		if ($mysqli_stmt->execute())//return result
 		{
 			$result=$mysqli_stmt->get_result();// not sure it's right
-			$result=$result->fetch_all();
+			$result=$result->fetch_array();
 			$mysqli_stmt->close();
 			return $result;
 		}
