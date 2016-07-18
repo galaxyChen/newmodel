@@ -1,6 +1,6 @@
-1.构造一个带有？的sql语句（检查构成部分）
+1.构造一个带有？的sql语句（检查构成部分），生成类型字符串，通过genetate函数生成
 2.使用prepare方法生成一个stmt对象
-3.使用stmt的bind_param方法来绑定变量(使用call_user_func_array函数来确定不同数量的变量)
+3.使用stmt的bind_param方法来绑定变量(使用call_user_func_array函数来确定不同数量的变量)。通过get_params方法来合并参数，第一个是类型字符串，后面的是参数
 4.使用stmt对象的excute方法来执行语句
 5.使用stmt对象的bind_result方法来绑定结果
 6.使用get_result来提取数据

@@ -63,11 +63,10 @@ class SQL
 	{
 		if ($this->col_num==0)//origin query head
 		{
-			// $this->flag['all']=true;
-			if ($this->type=='s')
+			if ($this->type=='s')//tyep is select
 				$sql='SELECT * FROM '.$this->table;
 		}
-		else 
+		else //add col query
 		{
 			if ($this->type=='s')
 				{
@@ -91,6 +90,19 @@ class SQL
 		$sql.=$this->case[$this->query_num-1].'= ?';
 		//$sql.=real_value($this->values[$this->query_num-1]).';';
 		return $sql;
+	}
+
+	public function get_params()
+	{
+		$type='';
+		foreach ($this->values as $value)
+			switch (gettype($value))
+			 {
+				case 'string':$type.='s';break;
+				case 'interge':$type.='i';break;
+				case 'double':$type.='d';break;
+			}
+		return array_unshift($this->values, $type);
 	}
 }
 

@@ -13,9 +13,9 @@ function mysqli_select($sql)//where multuple where limit order
 {
 	$mysqli=new mysqli();
 	link_db($mysqli);//link data base and set utf-8
-	$prepare=$sql->generate();
+	$prepare=$sql->generate();//generate a sql query string with ?
 	$flag=$sql->get_flag();
-	if (isset($flag['all']) && $flag['all'])//execute query directly
+	if (isset($flag['all']) && $flag['all'])//no ?,execute query directly
 	{
 		$mysqli_result=$mysqli->query($prepare);
 		if ($mysqli_result && $mysqli_result->num_rows>0)
@@ -29,7 +29,7 @@ function mysqli_select($sql)//where multuple where limit order
 	else //prepare sql query
 	{
 		$mysqli_stmt=$mysqli->prepare($prepare);
-		call_user_func_array(array($mysqli_stmt,'bind_param'),$sql->get_values());
+		call_user_func_array(array($mysqli_stmt,'bind_param'),$sql->get_params());
 		if ($mysqli_stmt->execute())//return result
 		{
 			$mysqli_result=$mysqli_stmt->get_result();
