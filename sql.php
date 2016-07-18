@@ -83,9 +83,9 @@ class SQL
 		if ($this->query_num==0) return $sql;
 		$sql.=' WHERE ';
 		for ($i=0;$i<$this->query_num-1;$i++)
-			$sql.=$this->case[$i].'='.real_value($this->values[$i]).' AND ';
-		$sql.=$this->case[$this->query_num-1].'=';
-		$sql.=real_value($this->values[$this->query_num-1]).';';
+			$sql.=$this->case[$i].'= ? AND ';
+		$sql.=$this->case[$this->query_num-1].'= ?';
+		//$sql.=real_value($this->values[$this->query_num-1]).';';
 		return $sql;
 	}
 }

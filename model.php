@@ -32,7 +32,7 @@ function mysqli_select($sql)//where multuple where limit order
 		call_user_func_array($mysqli_stmt->bind_param(),$sql->get_values());
 		if ($mysqli_stmt->execute())//return result
 		{
-			$mysqli_result=$mysqli_stmt->get_result();// not sure it's right
+			$mysqli_result=$mysqli_stmt->get_result();
 			$result=array();
 			$result=$mysqli_result->fetch_all(MYSQLI_ASSOC);
 			$mysqli_stmt->close();
@@ -45,5 +45,13 @@ function mysqli_select($sql)//where multuple where limit order
 	$mysqli->close();
 }
 
+
+function mysqli_insert($sql)
+{
+	$mysqli=new mysqli();
+	link_db($mysqli);
+	$prepare=$sql->generate();
+	$mysqli->query($prepare);
+}
 
 ?>
