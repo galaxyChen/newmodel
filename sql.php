@@ -103,7 +103,7 @@ class SQL
 				case 'double':$type.='d';break;
 			}
 		$param=$this->values;
-		array_unshift($param, $type)
+		array_unshift($param, $type);
 		return $param;
 	}
 }
