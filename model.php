@@ -29,6 +29,7 @@ function mysqli_select($sql)//where multuple where limit order
 	else //prepare sql query
 	{
 		$mysqli_stmt=$mysqli->prepare($prepare);
+		echo "flag 1";
 		call_user_func_array('$mysqli_stmt->bind_param',$sql->get_values());
 		if ($mysqli_stmt->execute())//return result
 		{
