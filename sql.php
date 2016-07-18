@@ -102,7 +102,9 @@ class SQL
 				case 'interge':$type.='i';break;
 				case 'double':$type.='d';break;
 			}
-		return array_unshift($this->values, $type);
+		$param=$this->values;
+		array_unshift($param, $type)
+		return $param;
 	}
 }
 
