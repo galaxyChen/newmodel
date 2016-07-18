@@ -9,7 +9,7 @@ include 'sql.php';
 including case, values (array) to indicate the query 
 including some methods to generate the query data
 */
-function mysql_select($sql)//where multuple where limit order
+function mysqli_select($sql)//where multuple where limit order
 {
 	$mysqli=new mysqli();
 	link_db($mysqli);//link data base and set utf-8
