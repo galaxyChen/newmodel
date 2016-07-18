@@ -34,7 +34,7 @@ class SQL
 
 	public function add_col($a)
 	{
-		$this->$col[$this->col_num]=$a;
+		$this->col[$this->col_num]=$a;
 		$this->col_num++;
 		return $this->col_num;
 	}
