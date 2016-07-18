@@ -15,6 +15,7 @@ class SQL
 	private $case=array();
 	private $values=array();
 	private $col=array();
+	private $col_values=array();
 	private $query_num=0;
 	private $col_num=0;
 	private $flag=array();
@@ -35,6 +36,14 @@ class SQL
 	public function add_col($a)
 	{
 		$this->col[$this->col_num]=$a;
+		$this->col_num++;
+		return $this->col_num;
+	}
+
+	public function add_update_col($a,$b)
+	{
+		$this->col[$this->col_num]=$a;
+		$this->col_values[$this->col_num]=$b;
 		$this->col_num++;
 		return $this->col_num;
 	}
@@ -65,6 +74,9 @@ class SQL
 		{
 			if ($this->type=='s')//tyep is select
 				$sql='SELECT * FROM '.$this->table;
+
+			if ($this->type=='i')
+				$sql='INSERT INTO '.$this->table;
 		}
 		else //add col query
 		{
@@ -79,17 +91,47 @@ class SQL
 
 		}
 		//select where logic
-		if ($this->query_num==0) 
+		if ($this->type=='s')
 		{
-			$this->flag['all']=true;
+			if ($this->query_num==0) 
+			{
+				$this->flag['all']=true;
+				return $sql;
+			}
+			$sql.=' WHERE ';
+			for ($i=0;$i<$this->query_num-1;$i++)
+				$sql.=$this->case[$i].'= ? AND ';
+			$sql.=$this->case[$this->query_num-1].'= ?';
+			//$sql.=real_value($this->values[$this->query_num-1]).';';
 			return $sql;
 		}
-		$sql.=' WHERE ';
-		for ($i=0;$i<$this->query_num-1;$i++)
-			$sql.=$this->case[$i].'= ? AND ';
-		$sql.=$this->case[$this->query_num-1].'= ?';
-		//$sql.=real_value($this->values[$this->query_num-1]).';';
-		return $sql;
+
+		if ($this->type=='i')//insert logic
+		{
+			$sql.=' (';
+			for ($i=0;$i<$this->query_num-1;$i++)
+				$sql.=$this->case[$i].', ';
+			$sql.=$this->case[$this->query_num-1].') ';
+			$sql.='VALUES (';
+			for ($i=0;$i<$this->query_num-1;$i++)
+				$sql.='?, ';
+			$sql.='?);';
+			return $sql;
+		}
+
+		if ($this->type=='u')
+		{
+			$sql='UPDATE '.$this->table.' SET ';
+			for ($i=0;$i<$this->col_num-1;$i++)
+				$sql.=$this->col[$i].' = ? ,';
+			$sql.=$this->col[$this->col_num-1].' = ? ';
+			$sql.='WHERE ';
+			for ($i=0;$i<$this->query_num-1;$i++)
+				$sql.=$this->case[$i].' = ? AND ';
+			$sql.=$this->case[$this->query_num-1].' = ? ';
+			return $sql;
+		}
+	
 	}
 
 	public function get_params()
@@ -99,10 +141,32 @@ class SQL
 			switch (gettype($value))
 			 {
 				case 'string':$type.='s';break;
-				case 'interge':$type.='i';break;
+				case 'integer':$type.='i';break;
 				case 'double':$type.='d';break;
 			}
 		$param=$this->values;
+		array_unshift($param, $type);
+		return $param;
+	}
+
+	public function get_update_params()
+	{
+		$type='';
+		foreach ($this->col_values as $value)
+			switch (gettype($value))
+			 {
+				case 'string':$type.='s';break;
+				case 'integer':$type.='i';break;
+				case 'double':$type.='d';break;
+			}
+		foreach ($this->values as $value) 
+			switch (gettype($value))
+			 {
+				case 'string':$type.='s';break;
+				case 'integer':$type.='i';break;
+				case 'double':$type.='d';break;
+			}
+		$param=array_merge($this->col_values,$this->values);
 		array_unshift($param, $type);
 		return $param;
 	}
