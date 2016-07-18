@@ -67,6 +67,18 @@ class SQL
 			if ($this->type=='s')
 				$sql='SELECT * FROM '.$this->table;
 		}
+		else 
+		{
+			if ($this->type=='s')
+				{
+					$sql='SELECT ';
+					for ($i=0;$i<$this->col_num-1;$i++)
+						$sql.=$this->col[$i].', ';
+					$sql.=$this->col[$this->col_num-1];
+					$sql.=' FROM '.$this->table;
+				}
+
+		}
 		//select where logic
 		if ($this->query_num==0) return $sql;
 		$sql.=' WHERE ';
