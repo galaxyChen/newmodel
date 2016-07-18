@@ -37,7 +37,11 @@ function mysqli_select($sql)//where multuple where limit order
 	else //prepare sql query
 	{
 		$mysqli_stmt=$mysqli->prepare($prepare);
-		$params=value_to_reference($sql->get_params());
+		$params=array();
+		$a=$sql->get_params();
+		$n=count($a);
+		for ($i=0;$i<$n;$i++)
+		$params[$i]=&$a[$i];
 		call_user_func_array(array($mysqli_stmt,'bind_param'),$params);
 		if ($mysqli_stmt->execute())//return result
 		{
