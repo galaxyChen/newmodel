@@ -21,11 +21,8 @@ function mysqli_select($sql)//where multuple where limit order
 		if ($mysqli_result && $mysqli_result->num_rows>0)
 		{
 			$result=array();
-			while ($row=$mysqli_result->fetch_assoc())
-				$result[]=$row;
-			$mysqli_result->free();
-			return $result;
-			
+			$result=$mysqli_result->fetch_all();
+			return $result;	
 		}
 		else return 1;
 	}
@@ -37,8 +34,7 @@ function mysqli_select($sql)//where multuple where limit order
 		{
 			$mysqli_result=$mysqli_stmt->get_result();// not sure it's right
 			$result=array();
-			while ($row=$mysqli_result->fetch_assoc())
-				$result[]=$row;
+			$result=$mysqli_result->fetch_all();
 			$mysqli_stmt->close();
 			$mysqli_result->free();
 			return $result;
