@@ -63,7 +63,7 @@ class SQL
 	{
 		if ($this->col_num==0)//origin query head
 		{
-			$this->flag['all']=true;
+			// $this->flag['all']=true;
 			if ($this->type=='s')
 				$sql='SELECT * FROM '.$this->table;
 		}
@@ -80,7 +80,11 @@ class SQL
 
 		}
 		//select where logic
-		if ($this->query_num==0) return $sql;
+		if ($this->query_num==0) 
+		{
+			$this->flag['all']=true;
+			return $sql;
+		}
 		$sql.=' WHERE ';
 		for ($i=0;$i<$this->query_num-1;$i++)
 			$sql.=$this->case[$i].'= ? AND ';
