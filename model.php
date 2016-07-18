@@ -2,7 +2,15 @@
 include 'link.php';
 include 'sql.php';
 
+function value_to_reference(&$a)
+{
+	$result=array();
+	$n=count($a);
+	for ($i=0;$i<$n;$i++)
+		$result[$i]=&$a[$i];
+	return $result;
 
+}
 
 /*
  parameter:$sql is an object
@@ -29,7 +37,8 @@ function mysqli_select($sql)//where multuple where limit order
 	else //prepare sql query
 	{
 		$mysqli_stmt=$mysqli->prepare($prepare);
-		call_user_func_array(array($mysqli_stmt,'bind_param'),$sql->get_params());
+		$params=value_to_reference($sql->get_params());
+		call_user_func_array(array($mysqli_stmt,'bind_param'),$params);
 		if ($mysqli_stmt->execute())//return result
 		{
 			$mysqli_result=$mysqli_stmt->get_result();
