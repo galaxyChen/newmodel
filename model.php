@@ -20,8 +20,12 @@ function mysqli_select($sql)//where multuple where limit order
 		$mysqli_result=$mysqli->query($prepare);
 		if ($mysqli_result && $mysqli_result->num_rows>0)
 		{
-			$result=$mysqli_result->fetch_array();
+			$result=array();
+			while ($row=$mysqli_result->fetch_assoc())
+				$result[]=$row;
+			$mysqli_result->free();
 			return $result;
+			
 		}
 		else return 1;
 	}
@@ -31,10 +35,14 @@ function mysqli_select($sql)//where multuple where limit order
 		call_user_func_array($mysqli_stmt->bind_param(''),$sql->get_values());
 		if ($mysqli_stmt->execute())//return result
 		{
-			$result=$mysqli_stmt->get_result();// not sure it's right
-			$result=$result->fetch_array();
+			$mysqli_result=$mysqli_stmt->get_result();// not sure it's right
+			$result=array();
+			while ($row=$mysqli_result->fetch_assoc())
+				$result[]=$row;
 			$mysqli_stmt->close();
+			$mysqli_result->free();
 			return $result;
+			
 		}
 		else return $mysqli_stmt->error;
 	}
