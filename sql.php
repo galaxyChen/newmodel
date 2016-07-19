@@ -142,6 +142,28 @@ class SQL
 			$sql=$this->where_generate($sql);
 			return $sql;
 		}
+
+		if ($this->type=='c')
+		{
+			$sql='SELECT COUNT (';
+			if ($this->col_num==0)
+			{
+				$this->flag['all']=true;
+				$sql.='*) FROM '.$this->table;
+			}
+			else 
+			{
+				$sql.=$this->col[0].') ';
+				$sql.='FROM '.$this->table;
+			}
+			if ($this->query_num>0)
+			{
+				$sql.=' WHERE ';
+				$sql=$this->where_generate($sql);
+			}
+			return $sql;
+
+		}
 	}
 
 	public function get_params()

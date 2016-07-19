@@ -29,16 +29,26 @@ function mysqli_run($sql)//where multuple where limit order
 	$prepare=$sql->generate();//generate a sql query string with ?
 	//select all logic
 	$flag=$sql->get_flag();
-	if (isset($flag['all']) && $flag['all'] &&$sql->type=='s')//no ?,execute query directly
+	if (isset($flag['all']) && $flag['all'])//no ?,execute query directly
 	{
-		$mysqli_result=$mysqli->query($prepare);
-		if ($mysqli_result && $mysqli_result->num_rows>0)
+		if ($sql->type=='i')
 		{
-			$result=array();
-			$result=$mysqli_result->fetch_all(MYSQLI_ASSOC);
-			return $result;	
+			$mysqli_result=$mysqli->query($prepare);
+			if ($mysqli_result && $mysqli_result->num_rows>0)
+			{
+				$result=array();
+				$result=$mysqli_result->fetch_all(MYSQLI_ASSOC);
+				return $result;	
+			}
+			else return 'unknown error';
 		}
-		else return 1;
+		if ($sql->type=='c')
+		{
+			$result=$mysqli->query($prepare);
+			if ($mysqli->error=='')
+			return $result;
+			else return $mysqli->error;
+		}
 	}
 
 	//stmt prepare
