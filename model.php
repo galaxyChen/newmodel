@@ -46,23 +46,29 @@ function mysqli_run($sql)//where multuple where limit order
 	//prepare parameters to be bond.change value to parameters
 	$params=array();
 	if ($sql->type=='u')
-		$a=$sql->get_update_params();
-	else $a=$sql->get_params();
+		$a=$sql->get_update_params();//return col,case query array
+	else $a=$sql->get_params();//return case query array
 	$n=count($a);
 	for ($i=0;$i<$n;$i++)
 	$params[$i]=&$a[$i];
-	print_r($params);
 	call_user_func_array(array($mysqli_stmt,'bind_param'),$params);
 	if ($sql->type=='s')
+	{
 		$result=execute($mysqli_stmt);
+		$mysqli->close();
+		return $result;
+	}
 	else 
 	{
 		if ($mysqli_stmt->execute())
+		{
+			if ($sql->type=='i')
 			return $mysqli_stmt->insert_id;
-		else return "error:".$mysqli_stmt->errno;
+			else return $mysqli_stmt->affected_rows;
+		}
+		else return "error:".$mysqli_stmt->error;
 	}
 	$mysqli->close();
-	return $result;
 }
 
 

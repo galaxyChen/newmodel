@@ -68,6 +68,14 @@ class SQL
 		return $this->flag;
 	}
 
+	private function where_generate($sql)
+	{
+		for ($i=0;$i<$this->query_num-1;$i++)
+			$sql.=$this->case[$i].'= ? AND ';
+		$sql.=$this->case[$this->query_num-1].'= ?';
+		return $sql;
+	}
+
 	public function generate()
 	{
 		if ($this->col_num==0)//origin query head
@@ -99,9 +107,7 @@ class SQL
 				return $sql;
 			}
 			$sql.=' WHERE ';
-			for ($i=0;$i<$this->query_num-1;$i++)
-				$sql.=$this->case[$i].'= ? AND ';
-			$sql.=$this->case[$this->query_num-1].'= ?';
+			$sql=$this->where_generate($sql);
 			//$sql.=real_value($this->values[$this->query_num-1]).';';
 			return $sql;
 		}
@@ -118,7 +124,7 @@ class SQL
 			$sql.='?);';
 			return $sql;
 		}
-
+		//update logic
 		if ($this->type=='u')
 		{
 			$sql='UPDATE '.$this->table.' SET ';
@@ -126,12 +132,16 @@ class SQL
 				$sql.=$this->col[$i].' = ? ,';
 			$sql.=$this->col[$this->col_num-1].' = ? ';
 			$sql.='WHERE ';
-			for ($i=0;$i<$this->query_num-1;$i++)
-				$sql.=$this->case[$i].' = ? AND ';
-			$sql.=$this->case[$this->query_num-1].' = ? ';
+			$sql=$this->where_generate($sql);
 			return $sql;
 		}
-	
+		//delete logic
+		if ($this->type=='d')
+		{
+			$sql='DELETE FROM '.$this->table.' WHERE ';
+			$sql=$this->where_generate($sql);
+			return $sql;
+		}
 	}
 
 	public function get_params()
