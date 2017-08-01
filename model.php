@@ -58,6 +58,11 @@ function mysqli_run($sql)//where multuple where limit order
 	if ($sql->type=='u')
 		$a=$sql->get_update_params();//return col,case query array
 	else $a=$sql->get_params();//return case query array
+	if (isset($a['status'])){
+		var_dump($prepare);
+		var_dump($a);
+		return;
+	}
 	$n=count($a);
 	for ($i=0;$i<$n;$i++)
 	$params[$i]=&$a[$i];

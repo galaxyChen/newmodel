@@ -19,8 +19,12 @@ class SQL
 	private $query_num=0;
 	private $col_num=0;
 	private $flag=array();
+	private $orKey=array();
+	private $orValue=array();
+	private $orNum=0;
 	public $table='';
 	public $type='';
+	private $or_where=false;
 
 	public function add($a,$b)//a is case,b is value
 	{
@@ -48,6 +52,14 @@ class SQL
 		return $this->col_num;
 	}
 
+	public function add_or($a,$b){
+		$this->orKey[$this->orNum]=$a;
+		$this->orValue[$a]=$b;
+		$this->orNum++;
+		$this->or_where=true;
+	}
+
+
 	public function get_case()
 	{
 		return $this->case;
@@ -70,6 +82,21 @@ class SQL
 
 	private function where_generate($sql)
 	{
+		if ($this->or_where){
+			$sql.='(';
+			for ($i=0;$i<$this->orNum;$i++){
+				$value=$this->orValue[$this->orKey[$i]];
+				$n=count($value);
+				
+				for ($j=0;$j<$n-1;$j++){
+					$sql.=$this->orKey[$i].' = ? OR ';
+				}
+				$sql.=$this->orKey[$i].' = ? )';
+				if ($i<$this->orNum-1)
+					$sql.=' AND (';
+			}
+			return $sql;
+		}
 		for ($i=0;$i<$this->query_num-1;$i++)
 			$sql.=$this->case[$i].'= ? AND ';
 		$sql.=$this->case[$this->query_num-1].'= ?';
@@ -78,6 +105,10 @@ class SQL
 
 	public function generate()
 	{
+		// if ($this->or_where){
+		// 	return where_generate();
+		// }
+		$sql='';
 		if ($this->col_num==0)//origin query head
 		{
 			if ($this->type=='s')//tyep is select
@@ -101,7 +132,7 @@ class SQL
 		//select where logic
 		if ($this->type=='s')
 		{
-			if ($this->query_num==0) 
+			if ($this->query_num==0&&!$this->or_where) 
 			{
 				$this->flag['all']=true;
 				return $sql;
@@ -168,6 +199,28 @@ class SQL
 
 	public function get_params()
 	{
+		if ($this->or_where){
+			// return 1;
+			$type='';
+			foreach ($this->orValue as $valueArr){
+				foreach ($valueArr as $value){
+					switch (gettype($value))
+					{
+						case 'string':$type.='s';break;
+						case 'integer':$type.='i';break;
+						case 'double':$type.='d';break;
+					}
+				}
+			}
+			$key=array_keys($this->orValue);
+			$param=$this->orValue[$key[0]];
+			for ($i=1;$i<$this->orNum;$i++)
+				if ($key[$i]!='all')
+				$param=array_merge($param, $this->orValue[$key[$i]]);
+			array_unshift($param, $type);
+			// $param['status']=1;
+			return $param;
+		}
 		$type='';
 		foreach ($this->values as $value)
 			switch (gettype($value))
