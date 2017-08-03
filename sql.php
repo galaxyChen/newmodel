@@ -25,6 +25,9 @@ class SQL
 	public $table='';
 	public $type='';
 	private $or_where=false;
+	private $not_col=0;
+	private $not_key=array();
+	private $not_value=array();
 
 	public function add($a,$b)//a is case,b is value
 	{
@@ -100,7 +103,19 @@ class SQL
 		for ($i=0;$i<$this->query_num-1;$i++)
 			$sql.=$this->case[$i].'= ? AND ';
 		$sql.=$this->case[$this->query_num-1].'= ?';
+		if ($this->not_col>0) {
+			$sql.=" AND ";
+			for ($i=0;$i<$this->not_col-1;$i++)
+				$sql.=$this->not_key[$i]." <> ? AND ";
+			$sql.=$this->not_key[$i]." <> ?";
+		}
 		return $sql;
+	}
+
+	public function add_not($key,$value){
+		$this->not_key[$this->not_col]=$key;
+		$this->not_value[$this->not_col]=$value;
+		$this->not_col++;
 	}
 
 	public function generate()
@@ -222,14 +237,15 @@ class SQL
 			return $param;
 		}
 		$type='';
-		foreach ($this->values as $value)
+		$values = array_merge($this->values,$this->not_value);
+		foreach ($values as $value)
 			switch (gettype($value))
 			 {
 				case 'string':$type.='s';break;
 				case 'integer':$type.='i';break;
 				case 'double':$type.='d';break;
 			}
-		$param=$this->values;
+		$param=$values;
 		array_unshift($param, $type);
 		return $param;
 	}
